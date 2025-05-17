@@ -1,0 +1,36 @@
+﻿services:
+  phonebook-api:
+    image: phonebook-api
+    container_name: phonebook-api
+    build:
+      context: ../src
+      dockerfile: Presentation/PhoneBook.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8080:8080"
+    networks:
+      - phonebook
+    depends_on:
+      - phonebook-db
+  
+  phonebook-db:
+    image: postgres
+    container_name: phonebook-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=phonebook
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - phonebook
+    volumes:
+      - phonebook-db:/var/lib/postgresql/data
+    
+volumes:
+  phonebook-db:
+
+networks:
+  phonebook:
+    driver: bridge
