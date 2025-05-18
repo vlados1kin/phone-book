@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PhoneBook.API.Extensions;
 using PhoneBook.API.Middlewares;
 using PhoneBook.Application.Services;
 using PhoneBook.Persistence;
@@ -12,10 +13,12 @@ builder.Services.ConfigureMapper();
 builder.Services.ConfigureQueries();
 builder.Services.AddControllers();
 builder.Services.AddTransient<ExceptionHandler>();
+builder.Services.ConfigureCors();
 
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandler>();
+app.UseCors("React");
 
 using (var scope = app.Services.CreateScope())
 {
