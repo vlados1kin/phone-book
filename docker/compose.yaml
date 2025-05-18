@@ -27,6 +27,17 @@
       - phonebook
     volumes:
       - phonebook-db:/var/lib/postgresql/data
+  
+  phonebook-frontend:
+    build: ../frontend
+    container_name: phonebook-frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    depends_on:
+      - phonebook-api
+    networks:
+      - phonebook
     
 volumes:
   phonebook-db:
